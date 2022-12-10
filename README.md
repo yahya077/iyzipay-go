@@ -4,6 +4,12 @@ This is an unofficial Iyzico Payment API client
 ### Information
 This package is still in development. I welcome suggestions for changes that will bring it closer to compliance without overly complicating the code, or useful test cases to add to the test suite.
 
+## 💈&nbsp; Installation
+
+```
+go get github.com/yahya077/iyzipay-go
+```
+
 ## 🚀&nbsp; Usage
 
 ```
