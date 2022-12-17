@@ -3,6 +3,7 @@ package client
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -25,17 +26,17 @@ func (c DefaultClient) SetRequestSchema(v interface{}) DefaultClient {
 	return c
 }
 
-func (c DefaultClient) Post(url string) (*http.Response, error) {
+func (c DefaultClient) method(url string, method string) (*http.Response, error) {
 	data, err := json.Marshal(c.RequestSchema)
 
 	if err != nil {
-		return nil, err
+		fmt.Println("cannot unmarshall request schema")
 	}
 
-	r, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(data))
+	r, err := http.NewRequest(method, url, bytes.NewBuffer(data))
 
 	if err != nil {
-		return nil, err
+		fmt.Println("cannot create new request")
 	}
 
 	r.Header = c.header
@@ -45,8 +46,16 @@ func (c DefaultClient) Post(url string) (*http.Response, error) {
 	res, err := client.Do(r)
 
 	if err != nil {
-		return res, err
+		fmt.Println("request error: \n", err)
 	}
 
 	return res, nil
+}
+
+func (c DefaultClient) Post(url string) (*http.Response, error) {
+	return c.method(url, http.MethodPost)
+}
+
+func (c DefaultClient) Delete(url string) (*http.Response, error) {
+	return c.method(url, http.MethodDelete)
 }

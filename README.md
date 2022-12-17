@@ -12,17 +12,34 @@ go get github.com/yahya077/iyzipay-go
 
 ## 🚀&nbsp; Usage
 
+### Initialization
 ```
+  //add your own credentials
   options := client.IyzicoClientOptions{
       BaseUrl:   iyzipay.SANDBOX_URL,
       APIKey:    "your-api-key",
       APISecret: "your-secret-key",
   }
+  
+  //this will be our client
   c := client.NewIyzicoClient(options)
+```
+### Payment
+```
+  //add what you need for request
+  request := requestSchema.CreatePayment{...}
   
-  // now lets get payment from service; CreatePayment
+  //now lets get payment from service
+  response, _ := iyzipay.New(c).Payment().Create(request)
+
+```
+### Card Storage
+```
+  //add what you need for request
+  request := requestSchema.RetrieveCard{...}
   
-  response, _ := iyzipay.New(c).CreatePayment(paymentRequest)
+  //now lets get payment from service
+  response, _ := iyzipay.New(c).CardStorage().Get(request)
 
 ```
 

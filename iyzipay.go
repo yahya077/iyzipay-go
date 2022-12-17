@@ -1,10 +1,8 @@
 package iyzipay
 
 import (
-	"encoding/json"
+	"github.com/yahya077/iyzipay-go/api"
 	"github.com/yahya077/iyzipay-go/client"
-	"github.com/yahya077/iyzipay-go/requestSchema"
-	"github.com/yahya077/iyzipay-go/responseSchema"
 )
 
 const (
@@ -12,24 +10,23 @@ const (
 	SANDBOX_URL = "https://sandbox-api.iyzipay.com"
 )
 
-type Iyzipay struct {
-	Client client.IyzicoClient
+type IIyzipay interface {
+	CardStorage() api.CardStorage
+	Payment() api.Payment
 }
 
-func (p Iyzipay) CreatePayment(request requestSchema.CreatePayment) (res responseSchema.CreatePayment, error error) {
-	r, e := p.Client.Post(request, "/payment/auth")
+type Iyzipay struct {
+	client client.IyzicoClient
+}
 
-	if e != nil {
-		return res, e
-	}
+func (p Iyzipay) CardStorage() api.CardStorage {
+	return api.NewCardStorage(p.client)
+}
 
-	e = json.NewDecoder(r.Body).Decode(&res)
-
-	return res, e
+func (p Iyzipay) Payment() api.Payment {
+	return api.NewPayment(p.client)
 }
 
 func New(iyzicoClient client.IyzicoClient) Iyzipay {
-	return Iyzipay{
-		Client: iyzicoClient,
-	}
+	return Iyzipay{iyzicoClient}
 }

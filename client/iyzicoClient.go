@@ -28,6 +28,10 @@ func (c *IyzicoClient) Post(request interface{}, endPoint string) (*http.Respons
 	return c.DefaultClient.SetHeader(c.Options.buildHeader(request)).SetRequestSchema(request).Post(c.Options.BaseUrl + endPoint)
 }
 
+func (c *IyzicoClient) Delete(request interface{}, endPoint string) (*http.Response, error) {
+	return c.DefaultClient.SetHeader(c.Options.buildHeader(request)).SetRequestSchema(request).Delete(c.Options.BaseUrl + endPoint)
+}
+
 func (c *IyzicoClientOptions) buildAuthorization(pki string) string {
 	return fmt.Sprintf("IYZWS %s:%s", c.APIKey, pki)
 }
